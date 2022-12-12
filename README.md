@@ -3,7 +3,7 @@
 ## Para ejecutar
 
 1. Descargar el proyecto desde este repositorio.
-2. Desde la consola de comandos dirigirse a la carpeta raiz(n5-front)
+2. Desde la consola de comandos dirigirse a la carpeta raiz(n5-back)
 3. Instalar dependencias. Ejecutar comando "npm install"
 4. Para ejecutar de manera local ejecuatar comando "npm start"
 

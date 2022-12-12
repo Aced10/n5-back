@@ -23,8 +23,8 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-const server = app.listen(process.env.PORT || 3000, () => {
-  console.log(`Server is ready on port ${process.env.PORT ?? 4200}`);
+const server = app.listen(process.env.PORT || 4200, () => {
+  console.log(`Server is ready on port ${process.env.PORT || 4200}`);
 });
 
 app.use(bodyParser.json({ limit: "50mb", extended: true }));

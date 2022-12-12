@@ -7,9 +7,9 @@ exports.create = (req, res) => {
   // Validate request
 
   if (
-    !req.body.employeeLastName &&
-    !req.body.employeeFirstName &&
-    !req.body.permissionType &&
+    !req.body.employeeLastName ||
+    !req.body.employeeFirstName ||
+    !req.body.permissionType ||
     !req.body.permissionDate
   ) {
     res.status(400).send({
@@ -36,16 +36,18 @@ exports.create = (req, res) => {
 
 // Retrieve all Permissions from the database.
 exports.findAll = async (req, res) => {
-  db.sequelize.query(
-    "SELECT * FROM Permissions JOIN PermissionTypes ON Permissions.PermissionType = PermissionTypes.PermissionTypeID"
-  ).then((results, metadata) => {
-    res.send(results[0]);
-  })
-  .catch((err) => {
-    res.status(500).send({
-      message: err,
+  db.sequelize
+    .query(
+      "SELECT * FROM Permissions JOIN PermissionTypes ON Permissions.PermissionType = PermissionTypes.PermissionTypeID"
+    )
+    .then((results, metadata) => {
+      res.send(results[0]);
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: err,
+      });
     });
-  });
 };
 
 // Find a single Permission with an id
@@ -78,18 +80,43 @@ exports.update = (req, res) => {
   })
     .then((num) => {
       if (num == 1) {
-        res.send({
+        res.status(200).send({
           message: "Permission was updated successfully.",
         });
       } else {
-        res.send({
-          message: `Cannot update Permission with id=${id}. Maybe Permission was not found or req.body is empty!`,
+        res.status(404).send({
+          message: `Cannot update Permission with id=${id}. Maybe Permission was not found or id is empty!`,
         });
       }
     })
     .catch((err) => {
       res.status(500).send({
         message: `Error updating Permission with id= ${id}`,
+      });
+    });
+};
+
+// Delete a Permission by the id in the request
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  Permission.destroy({
+    where: { PermissionID: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Permission was deleted successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot deleted Permission with id=${id}. Maybe Permission was not found or id is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error deleted Permission with id= ${id}`,
       });
     });
 };

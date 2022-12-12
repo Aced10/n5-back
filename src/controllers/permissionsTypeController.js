@@ -41,3 +41,28 @@ exports.findAll = (req, res) => {
       });
     });
 };
+
+// Delete a Permission type by the id in the request
+exports.delete = (req, res) => {
+  const id = req.params.id;
+
+  PermissionType.destroy({
+    where: { permissionTypeID: id },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.send({
+          message: "Permission type was deleted successfully.",
+        });
+      } else {
+        res.send({
+          message: `Cannot deleted Permission type with id=${id}. Maybe Permission was not found or id is empty!`,
+        });
+      }
+    })
+    .catch((err) => {
+      res.status(500).send({
+        message: `Error deleted Permission type with id= ${id}`,
+      });
+    });
+};

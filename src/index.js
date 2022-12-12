@@ -23,7 +23,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.listen(process.env.PORT || 3000, () => {
+const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is ready on port ${process.env.PORT ?? 4200}`);
 });
 
@@ -32,3 +32,5 @@ app.use(bodyParser.json({ limit: "50mb", extended: true }));
 //Routes
 app.use("/api/permissions", require("./routes/permissionsRoutes"));
 app.use("/api/permission-types", require("./routes/permissionsTypeRoutes"));
+
+module.exports = { app, server };
